@@ -46,6 +46,15 @@ public class PropertiesCommand implements Command {
 
 		context.bind(PROPERTIES_KEY, properties);
 		return ResultState.success();
+	
+	}
+		public ResultState executeSpark(Context context) {
+			Properties properties = PropertiesUtil.loadMandatoryProperties("sparkconfig", NO_PREFIX);
+			properties = PropertiesUtil.updateMandatoryProperties(properties, "spark", "spark.");
+			properties = loadPluginProperties(properties);
+
+			context.bind(PROPERTIES_KEY, properties);
+			return ResultState.success();	
 	}
 
 	private static Properties loadPluginProperties(Properties properties) {

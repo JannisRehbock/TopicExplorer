@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+import org.apache.spark.sql.SparkSession;
+
 import cc.commandmanager.core.Command;
 import cc.commandmanager.core.Context;
 import cc.commandmanager.core.ResultState;
@@ -19,21 +21,21 @@ public class testcommand implements Command {
 	
 	public ResultState execute(Context context) {
 		
+		SparkSession spark = context.get("spark-session", SparkSession.class );
+		Properties prop = context.get("properties", Properties.class);
 		
-		testimplementation test= new testimplementation(context.get("spark-session"), context.get("properties")  );
-		
+		testimplementation testimp= new testimplementation();
+		testimp.test(spark, prop);
 
 		return ResultState.success();
 	}
 	
 	
-	static
-	
 	@Override
 	public Set<String> getAfterDependencies() {
 		return Sets.newHashSet();
 	}
-
+	
 	@Override
 	public Set<String> getBeforeDependencies() {
 		return Sets.newHashSet("SparkCommand");

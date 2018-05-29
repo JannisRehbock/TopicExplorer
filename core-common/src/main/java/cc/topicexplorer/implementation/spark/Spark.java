@@ -27,7 +27,9 @@ public class Spark {
 		
 	}
 	
-	public Spark(Properties prop) {
+	
+	public SparkSession CreateSpark(Properties prop) {
+		
 		
 		
 		SparkConf conf =new SparkConf();
@@ -44,13 +46,15 @@ public class Spark {
 	    if(conf.get("Master") == "local") {
 	    	this.Memorycheck();
 	    }
+	    
+	    return spark;
+	  
 	}
 	
 	private SparkConf setProps(Properties prop, SparkConf conf) {
 		
-		this.properties= prop;
 		
-		conf.setMaster(this.properties.getProperty("spark.master")) ;
+		conf.setMaster(prop.getProperty("spark.master")) ;
 //		conf.set("spark.executor.memory", this.properties.getProperty(spark.executorMemory));
 		
 		return conf;

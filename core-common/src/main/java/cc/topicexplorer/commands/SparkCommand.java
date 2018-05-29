@@ -6,7 +6,7 @@ import java.util.Set;
 import cc.commandmanager.core.Command;
 import cc.commandmanager.core.Context;
 import cc.commandmanager.core.ResultState;
-import cc.topicexplorer.implementation.spark.*;
+import cc.topicexplorer.implementation.spark.Spark;
 
 import com.google.common.collect.Sets;
 
@@ -14,8 +14,8 @@ public class SparkCommand implements Command {
 
 	@Override
 	public ResultState execute(Context context) {
-		Spark spark = new Spark(context.get("properties", Properties.class));
-		context.bind("spark-session", spark);
+		Spark Cspark = new Spark();
+		context.bind("spark-session", Cspark.CreateSpark(context.get("properties", Properties.class)));
 		return ResultState.success();
 	}
 

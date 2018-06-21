@@ -104,13 +104,13 @@ public class RunSparkInitCorpus {
 //		makeCatalog(plugins, "preDB");
 
 		File catalogfile = new File(CATALOG_FILENAME);
-		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
+/*		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
 		CommandManager commandManager = new CommandManager(commandgraph.get());
 
 		if (commandsShouldGetExecuted) {
 			commandManager.executeAllCommands(context);
 			logger.info("Init corpus (pre DB) successfully executed!");
-		}
+		}*/
 //		Connection crawlManagerConnection = (Connection) context.get("CrawlManagmentConnection");
 //		crawlManagerConnection.close();
 //		context.unbind("CrawlManagmentConnection");
@@ -118,10 +118,10 @@ public class RunSparkInitCorpus {
 		Command SparkCommand = new SparkCommand();
 		SparkCommand.execute(context);
 
-//		makeCatalog(plugins, "postDB");
+		makeCatalog(plugins, "spark");
 
-		commandgraph = CommandGraph.fromXml(catalogfile);
-		commandManager = new CommandManager(commandgraph.get());
+		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
+		CommandManager commandManager = new CommandManager(commandgraph.get());
 
 		if (commandsShouldGetExecuted) {
 			commandManager.executeAllCommands(context);
@@ -160,7 +160,7 @@ public class RunSparkInitCorpus {
 */		}
 	}
 
-/*	private static void makeCatalog(String plugins, String extender) throws ParserConfigurationException,
+	private static void makeCatalog(String plugins, String extender) throws ParserConfigurationException,
 	TransformerException, IOException, SAXException {
 		DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
 		domFactory.setIgnoringComments(true);
@@ -210,13 +210,13 @@ public class RunSparkInitCorpus {
 		output.close();
 
 	}
-*/
-/*	private static Document getMergedXML(Document xmlFile1, Document xmlFile2) {
+
+	private static Document getMergedXML(Document xmlFile1, Document xmlFile2) {
 		NodeList nodes = xmlFile2.getElementsByTagName("catalog").item(0).getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node importNode = xmlFile1.importNode(nodes.item(i), true);
 			xmlFile1.getElementsByTagName("catalog").item(0).appendChild(importNode);
 		}
 		return xmlFile1;
-	}*/
+	}
 }

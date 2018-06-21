@@ -116,7 +116,7 @@
 		</resources>
 	</build>
 
-	<repositories>
+<!--	<repositories>
 		<repository>
 			<id>snapshots</id>
 			<url>https://moon.informatik.uni-halle.de/archiva/repository/snapshots-db</url>
@@ -126,7 +126,7 @@
 			<url>https://moon.informatik.uni-halle.de/archiva/repository/releases-db</url>
 		</repository>
 	</repositories>
-
+-->
 	<!-- <distributionManagement> <snapshotRepository> <id>snapshots</id> <name>archiva 
 		repository on moon</name> <url>https://moon.informatik.uni-halle.de/archiva/repository/snapshots-db</url> 
 		</snapshotRepository> </distributionManagement> -->

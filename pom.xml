@@ -18,7 +18,7 @@
 		<module>plugin-text-webinterface</module>
 		<module>plugin-colortopic-preprocessing</module>
 		<module>plugin-colortopic-webinterface</module>
-		<module>plugin-hierarchicaltopic-preprocessing</module>
+		<module>plugin-hierarchicaltopic-preproc"pom.xml"essing</module>
 		<module>plugin-hierarchicaltopic-webinterface</module>
 		<module>plugin-prune-preprocessing</module>
 		<module>plugin-category-preprocessing</module>

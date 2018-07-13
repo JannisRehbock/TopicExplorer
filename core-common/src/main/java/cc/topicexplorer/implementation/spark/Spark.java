@@ -13,7 +13,7 @@ public class Spark {
 	
 
 	
-	private Properties properties;
+//	private Properties properties;
 	
 	
 	private String master = "local"; 	// gets overwritten by respective Property

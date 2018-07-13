@@ -6,8 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
@@ -103,7 +101,7 @@ public class RunSparkInitCorpus {
 		logger.info("Activated plugins: " + plugins);
 //		makeCatalog(plugins, "preDB");
 
-		File catalogfile = new File(CATALOG_FILENAME);
+		
 /*		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
 		CommandManager commandManager = new CommandManager(commandgraph.get());
 
@@ -119,13 +117,14 @@ public class RunSparkInitCorpus {
 		SparkCommand.execute(context);
 
 		makeCatalog(plugins, "spark");
-
+		
+		File catalogfile = new File(CATALOG_FILENAME);
 		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
 		CommandManager commandManager = new CommandManager(commandgraph.get());
 
 		if (commandsShouldGetExecuted) {
 			commandManager.executeAllCommands(context);
-			logger.info("Init corpus (post DB) successfully executed!");
+			logger.info("Init corpus (spark) successfully executed!");
 		}
 
 		Date end = new Date();

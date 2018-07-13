@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog>
-	<command name="____________" className="cc.topicexplorer.plugin.mecab.initcorpus.command.____________"/>	
+	<command name="SparkAllTerms" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkAllTerms"/>
+	<command name="SparkDocTerm" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkDocTerm"/>
+	<command name="SparkDocumentWordType" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkDocumentWordType"/>
+	<command name="SparkPosType_old" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkPosType_old"/>
+	<command name="SparkPosType" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkPosType"/>	
 </catalog>

@@ -38,6 +38,8 @@ public class PosType_old{
 						      .option("header", "true")
 						      .load("mecabGer.csv");
 					df.createOrReplaceTempView("PosType");
+					
+				
 				
 					
 				} else if ("/english-utf8.par".equals(treeTaggerModel)) {

@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -38,14 +41,39 @@ public static void docTerm(Context context) {
 	SparkSession spark = (SparkSession) context.get("spark-session");	
 	
 	HashMap<String,Integer> tag2id = new HashMap<String,Integer>();
-	final ArrayList<String> description = new ArrayList<String>();
-	final ArrayList<Integer> pos = new ArrayList<Integer>();
+	//final ArrayList<String> description = new ArrayList<String>();
+	//final ArrayList<Integer> pos = new ArrayList<Integer>();
 	
 	Dataset<Row> posRs = spark.sql("SELECT POS,DESCRIPTION FROM PosType");
 	posRs.createOrReplaceTempView("posRs");
 	
 	Dataset<Row> textRs = spark.sql("SELECT DOCUMENT_ID, DOCUMENT_TEXT FROM orgTable_text");
-	posRs.createOrReplaceTempView("textRs");
+	textRs.createOrReplaceTempView("textRs");
+	
+	// Fill tag2id directly from .csv File
+	
+	textRs.write().format("csv")
+	.option("sep", ";")
+    .option("inferSchema", "true")
+    .option("header", "true")
+    .save("resources/textRs.csv");
+	
+	posRs.write().format("csv")
+	.option("sep", ";")
+    .option("inferSchema", "true")
+    .option("header", "true")
+    .save("resources/posRs.csv");
+
+	
+	/*
+	File file = new File("resources/posRs.csv"); 
+	List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8); 
+	for (String line : lines) { 
+	   String[] array = line.split(";");
+	   System.out.println(array[1] + " + " + array[0]);
+	   tag2id.put(array[1],Integer.parseInt(array[0]));
+	}
+	*/
 	
 	/*pos.add(posRs.select("POS").rdd().map(
 		new Function <Integer, Integer>(){
@@ -65,7 +93,7 @@ public static void docTerm(Context context) {
 	*/
 	
 	
-	
+/*	
 	posRs.select("DESCRIPTION").rdd().map(new Function <String,String>(){
 		
 		public String call(String i) {
@@ -73,9 +101,9 @@ public static void docTerm(Context context) {
 			return i;
 		}
 	}, Encoders.STRING());
+*/
 	
-	
-	
+/*	
 	if(pos.size()==description.size()) {
 		for(int i=0;i<pos.size();i++) {
 			tag2id.put(description.get(i),pos.get(i));	
@@ -83,7 +111,7 @@ public static void docTerm(Context context) {
 	}else {
 		logger.error("uneven length in arrays");
 	}
-	
+*/	
 	
 	
 	
@@ -114,20 +142,13 @@ public static void docTerm(Context context) {
 						"TreeTagger path or model not set.");
 			}
 
-			HashMap<String,Integer> tag2id = new HashMap<String,Integer>();
-			Statement posType_stmt = database.getConnection().createStatement(
-					java.sql.ResultSet.TYPE_FORWARD_ONLY,
-					java.sql.ResultSet.CONCUR_READ_ONLY);
-			posType_stmt.setFetchSize(Integer.MIN_VALUE);
-
-			ResultSet posRs = posType_stmt
-					.executeQuery("SELECT POS,DESCRIPTION FROM POS_TYPE;");
-			while (posRs.next()) {
-				tag2id.put(posRs.getString("DESCRIPTION"), posRs.getInt("POS"));
+			File filePosRs = new File("resources/posRs.csv"); 
+			List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
+			for (String line : lines) { 
+			   String[] array = line.split(";");
+			   System.out.println(array[1] + " + " + array[0]);
+			   tag2id.put(array[1],Integer.parseInt(array[0]));
 			}
-			posRs.close();
-			posType_stmt.close();
-
 			treeTaggerAnalyzer = new PreparationWithTreeTagger(',',
 					properties.getProperty("Mecab_treetagger-path").trim(), properties.getProperty("Mecab_treetagger-model").trim(), tag2id);
 
@@ -138,26 +159,29 @@ public static void docTerm(Context context) {
 				new OutputStreamWriter(
 						new FileOutputStream(fileName, true), "UTF-8"));
 
-		Statement stmt = database.getConnection().createStatement(
-				java.sql.ResultSet.TYPE_FORWARD_ONLY,
-				java.sql.ResultSet.CONCUR_READ_ONLY);
-		stmt.setFetchSize(Integer.MIN_VALUE);
-
-		ResultSet textRs = stmt
-				.executeQuery("SELECT DOCUMENT_ID, DOCUMENT_TEXT FROM orgTable_text");
-		while (textRs.next()) {
 			List<String> csvList = null;
 			if ("mecab".equals(textAnalyzer)) {
-				csvList = jpos.parseString(textRs.getInt("DOCUMENT_ID"),
-						textRs.getString("DOCUMENT_TEXT"), logger);
+				File fileTextRs = new File("resources/posRs.csv"); 
+				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
+				for (String line : textlines) { 
+				   String[] array = line.split(";");
+				   System.out.println(array[1] + " + " + array[0]);
+				   csvList = jpos.parseString(Integer.parseInt(array[0]),array[1], logger); 
+				}
 			} else if ("treetagger".equals(textAnalyzer)) {
-				csvList = treeTaggerAnalyzer.parse(textRs.getInt("DOCUMENT_ID"),
-						textRs.getString("DOCUMENT_TEXT"));
+				
+				File fileTextRs = new File("resources/posRs.csv"); 
+				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
+				for (String line : textlines) { 
+				   String[] array = line.split(";");
+				   System.out.println(array[1] + " + " + array[0]);
+				   csvList = treeTaggerAnalyzer.parse(Integer.parseInt(array[0]),array[1]);
+				}
 			}
 			for (String csvEntry : csvList) {
 				docTermCSVWriter.write(csvEntry + "\n");
 			}
-		}
+		
 		docTermCSVWriter.flush();
 		docTermCSVWriter.close();
 
@@ -175,7 +199,10 @@ public static void docTerm(Context context) {
 	
 	
 	
-}
+	}
+	catch(IOException e) {
+		
+	}
 }
 }
 

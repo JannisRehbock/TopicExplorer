@@ -56,13 +56,13 @@ public static void docTerm(Context context) {
 	.option("sep", ";")
     .option("inferSchema", "true")
     .option("header", "true")
-    .save("resources/textRs.csv");
+    .save("temp/textRs.csv");
 	
 	posRs.write().format("csv")
 	.option("sep", ";")
     .option("inferSchema", "true")
     .option("header", "true")
-    .save("resources/posRs.csv");
+    .save("temp/posRs.csv");
 
 	
 	/*
@@ -142,7 +142,7 @@ public static void docTerm(Context context) {
 						"TreeTagger path or model not set.");
 			}
 
-			File filePosRs = new File("resources/posRs.csv"); 
+			File filePosRs = new File("temp/posRs.csv"); 
 			List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
 			for (String line : lines) { 
 			   String[] array = line.split(";");
@@ -161,7 +161,7 @@ public static void docTerm(Context context) {
 
 			List<String> csvList = null;
 			if ("mecab".equals(textAnalyzer)) {
-				File fileTextRs = new File("resources/posRs.csv"); 
+				File fileTextRs = new File("temp/posRs.csv"); 
 				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : textlines) { 
 				   String[] array = line.split(";");
@@ -185,6 +185,13 @@ public static void docTerm(Context context) {
 		docTermCSVWriter.flush();
 		docTermCSVWriter.close();
 
+		
+		Dataset<Row> df = spark.read().format("csv")
+			      .option("sep", ";")
+			      .option("inferSchema", "true")
+			      .option("header", "true")
+			      .load("temp/docTerm.sql.csv");
+		df.createOrReplaceTempView("DocTerm");
 	/*	database.executeUpdateQuery("LOAD DATA LOCAL INFILE '"
 				+ fileName
 				+ "' IGNORE INTO TABLE "

@@ -15,12 +15,12 @@ public class AllTerms {
 		SparkSession spark = (SparkSession) context.get("spark-session");
 		
 		
-		//Rename DOCUMENT_TERM into XXX <- named in {@linkplain DocTerm}
-		Dataset<Row> AllTerms = spark.sql("SELECT DOCUMENT_TERM.TERM, COUNT(DISTINCT DOCUMENT_TERM.DOCUMENT_ID) AS COUNT, p2.POS " + 
-											"FROM DOCUMENT_TERM, POS_TYPE p1, POS_TYPE p2 " + 
-											"WHERE p1.POS=DOCUMENT_TERM.WORDTYPE_CLASS AND p1.LOW>=p2.LOW " + 
+		
+		Dataset<Row> AllTerms = spark.sql("SELECT DocTerm.TERM, COUNT(DISTINCT DocTerm.DOCUMENT_ID) AS COUNT, p2.POS " + 
+											"FROM DocTerm, POS_TYPE p1, POS_TYPE p2 " + 
+											"WHERE p1.POS=DocTerm.WORDTYPE_CLASS AND p1.LOW>=p2.LOW " + 
 											"AND p1.HIGH<=p2.HIGH " + 
-											"GROUP BY DOCUMENT_TERM.TERM, p2.POS");
+											"GROUP BY DocTerm.TERM, p2.POS");
 	
 			AllTerms.createOrReplaceTempView("AllTerms");
 			

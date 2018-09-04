@@ -1,7 +1,5 @@
 package cc.topicexplorer.plugin.mecab.initcorpus.sparkimplementations;
 
-import java.sql.SQLException;
-
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;

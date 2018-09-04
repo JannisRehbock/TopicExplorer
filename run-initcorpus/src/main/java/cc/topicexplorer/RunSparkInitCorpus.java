@@ -36,7 +36,7 @@ import cc.topicexplorer.commands.SparkCommand;
 import cc.topicexplorer.commands.PropertiesCommand;
 import cc.topicexplorer.utils.CommandLineParser;
 import cc.topicexplorer.utils.LoggerUtil;
-import cc.topicexplorer.utils.PropertiesUtil;
+//import cc.topicexplorer.utils.PropertiesUtil;
 
 
 

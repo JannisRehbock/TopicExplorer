@@ -1,12 +1,8 @@
 package cc.topicexplorer.plugin.mecab.initcorpus.sparkimplementations;
 
 import org.apache.spark.sql.SparkSession;
-//import org.apache.spark.api.java.function.Function;
-//import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.Dataset;
-//import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
-//import java.util.ArrayList;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,7 +18,6 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 import cc.commandmanager.core.Context;
-//import org.spark_project.jetty.servlet.ServletContextHandler.Context;
 import cc.topicexplorer.plugin.mecab.initcorpus.command.DocumentTermFill;
 import cc.topicexplorer.plugin.mecab.initcorpus.implementation.postagger.JPOSMeCab;
 import cc.topicexplorer.plugin.mecab.initcorpus.implementation.treetagger.PreparationWithTreeTagger;
@@ -38,24 +33,7 @@ public static void docTerm(Context context) {
 	
 	SparkSession spark = (SparkSession) context.get("spark-session");	
 	
-	HashMap<String,Integer> tag2id = new HashMap<String,Integer>();
-	
-	//***************************************
-	//Wo wird orgTable_text / orgTable_meta eingelesen/ gespeichert??
-	//Kann direkt aus der CSV eingelesen werden weiter unten je nachdem wo es herkommt.
-	//***************************************
-	
-	Dataset<Row> textRs = spark.sql("SELECT DOCUMENT_ID, DOCUMENT_TEXT FROM orgTable_text");
-	textRs.createOrReplaceTempView("textRs");
-	
-	// Fill tag2id directly from .csv File
-	
-	textRs.write().format("csv")
-	.option("sep", ";")
-    .option("inferSchema", "true")
-    .option("header", "true")
-    .save("temp/textRs.csv");
-	
+	HashMap<String,Integer> tag2id = new HashMap<String,Integer>();	
 	
 	Properties properties = (Properties) context.get("properties");
 	String textAnalyzer = properties.getProperty("Mecab_text-analyzer").trim();
@@ -119,7 +97,7 @@ public static void docTerm(Context context) {
 
 			List<String> csvList = null;
 			if ("mecab".equals(textAnalyzer)) {
-				File fileTextRs = new File("temp/textRs.csv"); 
+				File fileTextRs = new File(context.getString("text")); 
 				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : textlines) { 
 				   String[] array = line.split(";");
@@ -128,7 +106,7 @@ public static void docTerm(Context context) {
 				}
 			} else if ("treetagger".equals(textAnalyzer)) {
 				
-				File fileTextRs = new File("temp/textRs.csv"); 
+				File fileTextRs = new File(context.getString("text")); 
 				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : textlines) { 
 				   String[] array = line.split(";");

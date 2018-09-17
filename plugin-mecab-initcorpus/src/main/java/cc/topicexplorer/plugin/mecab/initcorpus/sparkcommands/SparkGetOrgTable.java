@@ -10,16 +10,16 @@ import com.google.common.collect.Sets;
 import cc.commandmanager.core.Command;
 import cc.commandmanager.core.Context;
 import cc.commandmanager.core.ResultState;
-import cc.topicexplorer.plugin.mecab.initcorpus.sparkimplementations.DocTerm;
+import cc.topicexplorer.plugin.mecab.initcorpus.sparkimplementations.GetOrgTable;
 
 
-public class SparkDocTerm implements Command {
-	private static final Logger logger = Logger.getLogger(DocTerm.class);
+public class SparkGetOrgTable implements Command {
+	private static final Logger logger = Logger.getLogger(GetOrgTable.class);
 	
 	public ResultState execute(Context context) {
 		
 		
-		DocTerm.docTerm(context);
+		GetOrgTable.getOrgTable(context);
 		
 		return ResultState.success();
 	}
@@ -34,17 +34,17 @@ public class SparkDocTerm implements Command {
 
 	@Override
 	public Set<String> getBeforeDependencies() {
-		return Sets.newHashSet("SparkPosType_old", "SparkGetOrgTable");
+		return Sets.newHashSet();
 	}
 
 	@Override
 	public Set<String> getOptionalAfterDependencies() {
 		return Sets.newHashSet();
 	}
-
+	
 	@Override
-	public Set<String> getOptionalBeforeDependencies(){
+	public Set<String> getOptionalBeforeDependencies() {
 		return Sets.newHashSet();
 	}
-}
 	
+}

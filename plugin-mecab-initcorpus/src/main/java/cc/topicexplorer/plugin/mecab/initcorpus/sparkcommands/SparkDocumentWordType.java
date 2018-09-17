@@ -36,7 +36,7 @@ public class SparkDocumentWordType implements Command{
 
 	@Override
 	public Set<String> getBeforeDependencies() {
-		return Sets.newHashSet("SparkPosType_old", "SparkDocTerm");
+		return Sets.newHashSet("SparkPosType_old", "SparkDocTerm", "SparkGetOrgTable");
 	}
 
 	@Override

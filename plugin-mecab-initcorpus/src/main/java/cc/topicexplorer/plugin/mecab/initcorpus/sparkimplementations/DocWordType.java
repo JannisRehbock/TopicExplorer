@@ -17,6 +17,12 @@ public class DocWordType {
 		
 		SparkSession spark = (SparkSession) context.get("spark-session");	
 		
+		Dataset<Row> df = spark.read().format("csv")
+			      .option("sep", ";")
+			      .option("inferSchema", "true")
+			      .option("header", "true")
+			      .load(context.getString("meta"));
+		df.createOrReplaceTempView("orgTable_meta");
 		
 		Dataset<Row> DocWordType = spark.sql("SELECT meta.DOCUMENT_ID as DOCUMENT_ID, p.POS, COUNT(*) AS TOKEN_COUNT,COUNT(DISTINCT dt.TERM) as TERM_COUNT, "
 				+ "MIN(char_length(dt.TOKEN)) as MIN_TOKEN_LENGTH, MAX(char_length(dt.TOKEN)) as MAX_TOKEN_LENGTH, "

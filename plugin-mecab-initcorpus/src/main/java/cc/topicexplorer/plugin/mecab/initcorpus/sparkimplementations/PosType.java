@@ -12,6 +12,9 @@ public class PosType {
 			
 			SparkSession spark = (SparkSession) context.get("spark-session");
 	
+			
+			
+			
 			Dataset<Row> partOne = spark.sql("SELECT POS, COUNT(TERM) AS TERM_COUNT, SUM(COUNT) AS TOKEN_COUNT " + 
 											"FROM AllTerms GROUP BY POS");
 			partOne.createOrReplaceTempView("partOne");
@@ -30,7 +33,14 @@ public class PosType {
 											+ "AND partONE.POS = PosType.POS");
 			
 			PosType.createOrReplaceTempView("PosType");
-			PosType.cache();
+			PosType.repartition(1)
+			.write()
+			.format("com.databricks.spark.csv")
+			.option("header", "true")
+			.option("delimiter", ";")
+			.save("temp/PosType.csv");
+			
+			//will be saved as temp/PosType.csv/part-00000  !!
 			
 			
 	}

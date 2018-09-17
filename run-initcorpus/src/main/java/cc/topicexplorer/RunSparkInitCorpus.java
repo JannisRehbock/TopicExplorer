@@ -92,26 +92,23 @@ public class RunSparkInitCorpus {
 	private static void runSparkInitCorpus(Set<String> startCommands, Set<String> endCommands,
 			boolean commandsShouldGetExecuted, String catalogLocation) throws Exception {
 		Date start = new Date();
+		
 		Context context = new Context();
 		executeInitialCommands(context);
-
+		
+		/* File filemeta = new File("/cc/Topicexplorer/orgTable/_meta"); 
+		File filetext = new File("/cc/Topicexplorer/orgTable/_text");
+		String[] metafile = filemeta.list();
+		String[] textfile = filetext.list();
+		if(textfile.length == 1 && metafile.length == 1) {
+			context.bind("meta", metafile[0]);
+			context.bind("text", textfile[0]);
+		}
+		*/
 		Properties properties = (Properties) context.get("properties");
 		String plugins = properties.getProperty("plugins");
 
 		logger.info("Activated plugins: " + plugins);
-//		makeCatalog(plugins, "preDB");
-
-		
-/*		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
-		CommandManager commandManager = new CommandManager(commandgraph.get());
-
-		if (commandsShouldGetExecuted) {
-			commandManager.executeAllCommands(context);
-			logger.info("Init corpus (pre DB) successfully executed!");
-		}*/
-//		Connection crawlManagerConnection = (Connection) context.get("CrawlManagmentConnection");
-//		crawlManagerConnection.close();
-//		context.unbind("CrawlManagmentConnection");
 
 		Command SparkCommand = new SparkCommand();
 		SparkCommand.execute(context);
@@ -141,22 +138,11 @@ public class RunSparkInitCorpus {
 		try {
 			Command propertiesCommand = new PropertiesCommand();
 			propertiesCommand.execute(context);
-/*
-			Properties dbProps = PropertiesUtil.updateOptionalProperties(new Properties(), "cmdb", "");
 
-			context.bind(
-					"CrawlManagmentConnection",
-					DriverManager.getConnection("jdbc:mysql://" + dbProps.getProperty("DbLocation")
-							+ "?useUnicode=true&characterEncoding=UTF-8&useCursorFetch=true",
-							dbProps.getProperty("DbUser"), dbProps.getProperty("DbPassword")));
-*/
 		} catch (RuntimeException exception) {
 			logger.error("Initialization abborted, due to a critical exception");
 			throw exception;
-/*		} catch (SQLException exception) {
-			logger.error("Initialization abborted, due to a critical exception");
-			throw exception;
-*/		}
+		}
 	}
 
 	private static void makeCatalog(String plugins, String extender) throws ParserConfigurationException,

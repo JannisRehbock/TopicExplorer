@@ -5,4 +5,5 @@
 	<command name="SparkDocumentWordType" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkDocumentWordType"/>
 	<command name="SparkPosType_old" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkPosType_old"/>
 	<command name="SparkPosType" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkPosType"/>	
+	<command name="SparkGetOrgTable" className="cc.topicexplorer.plugin.mecab.initcorpus.sparkcommands.SparkGetOrgTable"/>	
 </catalog>

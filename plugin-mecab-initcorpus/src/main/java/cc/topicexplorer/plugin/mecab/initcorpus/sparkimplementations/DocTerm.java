@@ -67,8 +67,8 @@ public static void docTerm(Context context) {
 				List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : lines) { 
 				   String[] array = line.split(";");
-				   System.out.println(array[1] + " + " + array[0]);
-				   tag2id.put(array[1],Integer.parseInt(array[0]));
+				   System.out.println(array[3] + " + " + array[0]);
+				   tag2id.put(array[3],Integer.parseInt(array[0]));
 				}
 			}
 			else if("/german-utf8.par".equals(treeTaggerModel)) {
@@ -76,8 +76,8 @@ public static void docTerm(Context context) {
 				List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : lines) { 
 				   String[] array = line.split(";");
-				   System.out.println(array[1] + " + " + array[0]);
-				   tag2id.put(array[1],Integer.parseInt(array[0]));
+				   System.out.println(array[3] + " + " + array[0]);
+				   tag2id.put(array[3],Integer.parseInt(array[0]));
 				}
 				
 				

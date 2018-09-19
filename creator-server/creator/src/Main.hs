@@ -15,6 +15,7 @@ import TopicExplorer.Creator.Corpus (Corpus(Corpus))
 import TopicExplorer.Configuration.Utility (
          withJsonBody, mimetypeJSON,
          parseURINoQuery, makeURI,
+         parseRelativeOrAbsoluteURINoQuery
          )
 import TopicExplorer.Configuration.Corpus
          (Keywords(Keywords), Identifier(Identifier))
@@ -141,10 +142,10 @@ jsonFromJob appServer corpus
          []) :
       (Mn.when (isFinished initializeTimes) $
        Map.singleton "url_nlp" $
-         Aeson.toJSON $ show appServer ++ identifier ++ "_nlp") :
+         Aeson.toJSON $ show appServer ++ identifier ++ "_nlp/") :
       (Mn.when (isFinished computeTimes) $
        Map.singleton "url_te" $
-         Aeson.toJSON $ show appServer ++ identifier ++ "_te") :
+         Aeson.toJSON $ show appServer ++ identifier ++ "_te/") :
       []
 
 
@@ -315,7 +316,7 @@ optParser defltScriptDir =
          OP.metavar "DIR" <>
          OP.value defltScriptDir <>
          OP.help "Directory for Topic-Explorer shell scripts")
-      (OP.option (OP.eitherReader parseURINoQuery) $
+      (OP.option (OP.eitherReader parseRelativeOrAbsoluteURINoQuery) $
          OP.long "app-server" <>
          OP.metavar "URL" <>
          OP.value (makeURI "http://localhost:8080/") <>

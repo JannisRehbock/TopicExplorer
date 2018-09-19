@@ -31,8 +31,8 @@
 		<module>plugin-mecab-initcorpus</module>
 		<module>plugin-time-preprocessing</module>
 		<module>plugin-time-webinterface</module>
-		<module>plugin-wiki-preprocessing</module>
-		<module>plugin-wordtype-preprocessing</module>
+<!--		<module>plugin-wiki-preprocessing</module> -->
+		<module>plugin-wordtype-preprocessing</module> 
 		<module>plugin-wordtype-webinterface</module>
 		<module>run-initcorpus</module>
 		<module>run-jobmanagement</module>
@@ -116,7 +116,9 @@
 		</resources>
 	</build>
 
+
 <!--	<repositories>
+
 		<repository>
 			<id>snapshots</id>
 			<url>https://moon.informatik.uni-halle.de/archiva/repository/snapshots-db</url>

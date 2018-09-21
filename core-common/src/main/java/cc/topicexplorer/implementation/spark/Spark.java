@@ -16,7 +16,7 @@ public class Spark {
 //	private Properties properties;
 	
 	
-	private String master = "local"; 	// gets overwritten by respective Property
+	private String master = "local[*]"; 	// gets overwritten by respective Property
 	
 	private void Memorycheck() {
 		
@@ -34,7 +34,7 @@ public class Spark {
 		
 		SparkConf conf =new SparkConf();
 		conf.setMaster(master);			//gets changed if Property is specified in .properties file
-		conf = this.setProps(prop, conf);
+		//conf = this.setProps(prop, conf);
 		
 		
 	    SparkSession spark = SparkSession
@@ -43,9 +43,9 @@ public class Spark {
 	      .config(conf)
 	      .getOrCreate();
 	    
-	    if(conf.get("Master") == "local") {
+	/*    if(conf.get("Master") == "local") {
 	    	this.Memorycheck();
-	    }
+	    }*/
 	    
 	    return spark;
 	  
@@ -54,7 +54,7 @@ public class Spark {
 	private SparkConf setProps(Properties prop, SparkConf conf) {
 		
 		
-		conf.setMaster(prop.getProperty("spark.master")) ;
+		conf.setMaster(prop.getProperty("master")) ;
 //		conf.set("spark.executor.memory", this.properties.getProperty(spark.executorMemory));
 		
 		return conf;

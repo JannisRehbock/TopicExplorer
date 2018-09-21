@@ -113,7 +113,7 @@ public class RunSparkInitCorpus {
 		Command SparkCommand = new SparkCommand();
 		SparkCommand.execute(context);
 
-		makeCatalog(plugins, "spark");
+		makeCatalog(plugins,"spark");
 		
 		File catalogfile = new File(CATALOG_FILENAME);
 		Try<CommandGraph> commandgraph = CommandGraph.fromXml(catalogfile);
@@ -154,8 +154,7 @@ public class RunSparkInitCorpus {
 		builder = domFactory.newDocumentBuilder();
 
 		// init
-		Document doc = builder.parse(RunSparkInitCorpus.class
-				.getResourceAsStream("/cc/topicexplorer/core-initcorpus/catalog/" + extender + "Config.xml"));
+		Document doc = builder.parse(RunSparkInitCorpus.class.getResourceAsStream("/cc/topicexplorer/core-initcorpus/catalog/" + extender + "Config.xml"));
 
 		// process plugin catalogs
 		for (String plugin : plugins.split(",")) {

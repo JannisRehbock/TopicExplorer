@@ -1,4 +1,4 @@
-package cc.topicexplorer.commands;
+	package cc.topicexplorer.commands;
 
 import java.sql.SQLException;
 import java.util.Properties;

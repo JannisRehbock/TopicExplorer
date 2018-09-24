@@ -15,9 +15,8 @@ public class AllTerms {
 		SparkSession spark = (SparkSession) context.get("spark-session");
 		
 		
-		
 		Dataset<Row> AllTerms = spark.sql("SELECT DocTerm.TERM, COUNT(DISTINCT DocTerm.DOCUMENT_ID) AS COUNT, p2.POS " + 
-											"FROM DocTerm, POS_TYPE p1, POS_TYPE p2 " + 
+											"FROM DocTerm, PosType p1, PosType p2 " + 
 											"WHERE p1.POS=DocTerm.WORDTYPE_CLASS AND p1.LOW>=p2.LOW " + 
 											"AND p1.HIGH<=p2.HIGH " + 
 											"GROUP BY DocTerm.TERM, p2.POS");

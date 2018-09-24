@@ -30,7 +30,7 @@ public class SparkPosType implements Command {
 
 	@Override
 	public Set<String> getBeforeDependencies() {
-		return Sets.newHashSet("SparkPosType_old", "SparkDocTerm", "SparkAllTerms", "SparkDocumentWordtype");
+		return Sets.newHashSet("SparkPosType_old", "SparkDocTerm", "SparkAllTerms", "SparkDocumentWordType");
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class SparkDocTerm implements Command {
 
 	@Override
 	public Set<String> getBeforeDependencies() {
-		return Sets.newHashSet("SparkPosType_old", "SparkGetOrgTable");
+		return Sets.newHashSet("SparkGetOrgTable");
 	}
 
 	@Override

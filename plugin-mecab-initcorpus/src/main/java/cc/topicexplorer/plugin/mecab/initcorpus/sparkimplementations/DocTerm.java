@@ -4,9 +4,12 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 
+import com.csvreader.CsvReader;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -63,22 +66,42 @@ public static void docTerm(Context context) {
 			String treeTaggerModel = properties.getProperty("Mecab_treetagger-model").trim();
 			if("/english-utf8.par".equals(treeTaggerModel)) {
 			
-				File filePosRs = new File("resources/mecabEng.csv"); 
+				CsvReader reader = new CsvReader(new FileReader(context.getString("Eng")));
+				reader.readHeaders();
+				int pos = reader.getIndex("POS");
+				int description = reader.getIndex("DESCRIPTION");
+				while (reader.readRecord()) {
+					tag2id.put(reader.get(description),Integer.parseInt(reader.get(pos)));
+				}
+				
+				/*File filePosRs = new File(context.getString("Eng")); 
 				List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : lines) { 
 				   String[] array = line.split(";");
 				   System.out.println(array[3] + " + " + array[0]);
 				   tag2id.put(array[3],Integer.parseInt(array[0]));
-				}
+				}*/
+				
 			}
 			else if("/german-utf8.par".equals(treeTaggerModel)) {
-				File filePosRs = new File("resources/mecabGer.csv"); 
+				
+				CsvReader reader = new CsvReader(new FileReader(context.getString("Ger")));
+				reader.readHeaders();
+				int pos = reader.getIndex("POS");
+				int description = reader.getIndex("DESCRIPTION");
+				while (reader.readRecord()) {
+					System.out.println(reader.get(description)+"   " +reader.get(pos));
+					tag2id.put(reader.get(description),Integer.parseInt(reader.get(pos)));
+				}
+				
+				/*
+				File filePosRs = new File(context.getString("Ger")); 
 				List<String> lines = Files.readAllLines(filePosRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : lines) { 
 				   String[] array = line.split(";");
 				   System.out.println(array[3] + " + " + array[0]);
 				   tag2id.put(array[3],Integer.parseInt(array[0]));
-				}
+				}*/
 				
 				
 				
@@ -97,25 +120,42 @@ public static void docTerm(Context context) {
 
 			List<String> csvList = null;
 			if ("mecab".equals(textAnalyzer)) {
+				
+				
+				
+				CsvReader reader = new CsvReader(new FileReader(context.getString("text")));
+				while (reader.readRecord()) {
+					csvList = jpos.parseString(Integer.parseInt(reader.get(0)),reader.get(1), logger);
+				}
+				
+				/*
 				File fileTextRs = new File(context.getString("text")); 
 				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : textlines) { 
 				   String[] array = line.split(";");
 				   System.out.println(array[1] + " + " + array[0]);
 				   csvList = jpos.parseString(Integer.parseInt(array[0]),array[1], logger); 
-				}
+				}*/
 			} else if ("treetagger".equals(textAnalyzer)) {
 				
+				
+				CsvReader reader = new CsvReader(new FileReader(context.getString("text")));
+				while (reader.readRecord()) {
+					csvList = treeTaggerAnalyzer.parse(Integer.parseInt(reader.get(0)),reader.get(1));
+				}
+				/*			
 				File fileTextRs = new File(context.getString("text")); 
 				List<String> textlines = Files.readAllLines(fileTextRs.toPath(), StandardCharsets.UTF_8); 
 				for (String line : textlines) { 
 				   String[] array = line.split(";");
 				   System.out.println(array[1] + " + " + array[0]);
 				   csvList = treeTaggerAnalyzer.parse(Integer.parseInt(array[0]),array[1]);
-				}
+				}*/
 			}
+			docTermCSVWriter.write("DOCUMENT_ID,POSITION_OF_TOKEN_IN_DOCUMENT,TERM,TOKEN,WORDTYPE_CLASS,CONTINUATION" + "\n");
 			for (String csvEntry : csvList) {
-				docTermCSVWriter.write(csvEntry + "\n");
+				System.out.println(csvEntry);
+				docTermCSVWriter.write(csvEntry + ",0" + "\n");
 			}
 		
 		docTermCSVWriter.flush();
@@ -123,7 +163,7 @@ public static void docTerm(Context context) {
 
 		
 		Dataset<Row> df = spark.read().format("csv")
-			      .option("sep", ";")
+			      .option("sep", ",")
 			      .option("inferSchema", "true")
 			      .option("header", "true")
 			      .load("temp/docTerm.sql.csv");

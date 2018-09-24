@@ -98,6 +98,7 @@
 					<exclude>**/catalog.xml</exclude>
 					<exclude>**/preDBConfig.xml</exclude>
 					<exclude>**/postDBConfig.xml</exclude>
+					<exclude>**/sparkConfig.xml</exclude>
 					<exclude>scripts/*</exclude>
 				</excludes>
 			</resource>
@@ -109,6 +110,7 @@
 					<include>**/catalog.xml</include>
 					<include>**/preDBConfig.xml</include>
 					<include>**/postDBConfig.xml</include>
+					<include>**/sparkConfig.xml</include>
 				</includes>
 				<targetPath>cc/topicexplorer/${project.artifactId}/catalog</targetPath>
 			</resource>

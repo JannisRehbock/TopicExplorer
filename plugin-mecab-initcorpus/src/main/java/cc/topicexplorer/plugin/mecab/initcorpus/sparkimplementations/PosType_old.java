@@ -20,10 +20,10 @@ public class PosType_old{
 			if ("mecab".equals(textAnalyzer)) {
 				
 				Dataset<Row> df = spark.read().format("csv")
-					      .option("sep", ";")
+					      .option("sep", ",")
 					      .option("inferSchema", "true")
 					      .option("header", "true")
-					      .load("mecabJap.csv");
+					      .load(context.getString("Jap"));
 				df.createOrReplaceTempView("PosType");
 				
 			} else if ("treetagger".equals(textAnalyzer)) {
@@ -33,10 +33,10 @@ public class PosType_old{
 				if ("/german-utf8.par".equals(treeTaggerModel)) {
 					
 					Dataset<Row> df = spark.read().format("csv")
-						      .option("sep", ";")
+						      .option("sep", ",")
 						      .option("inferSchema", "true")
 						      .option("header", "true")
-						      .load("mecabGer.csv");
+						      .load(context.getString("Ger"));
 					df.createOrReplaceTempView("PosType");
 					
 				
@@ -45,10 +45,10 @@ public class PosType_old{
 				} else if ("/english-utf8.par".equals(treeTaggerModel)) {
 
 					Dataset<Row> df = spark.read().format("csv")
-						      .option("sep", ";")
+						      .option("sep", ",")
 						      .option("inferSchema", "true")
 						      .option("header", "true")
-						      .load("mecabEng.csv");
+						      .load(context.getString("Eng"));
 					df.createOrReplaceTempView("PosType");
 				}
 				

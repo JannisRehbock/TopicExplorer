@@ -32,7 +32,7 @@ public class SparkPosType_old implements Command {
 
 	@Override
 	public Set<String> getBeforeDependencies() {
-		return Sets.newHashSet();
+		return Sets.newHashSet("SparkGetOrgTable");
 	}
 
 	@Override

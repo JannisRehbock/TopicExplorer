@@ -15,8 +15,9 @@ public class PosType {
 			
 			
 			
-			Dataset<Row> partOne = spark.sql("SELECT POS, COUNT(TERM) AS TERM_COUNT, SUM(COUNT) AS TOKEN_COUNT " + 
-											"FROM AllTerms GROUP BY POS");
+			Dataset<Row> partOne = spark.sql("SELECT POS as POS, COUNT(TERM) AS TERM_COUNT, SUM(COUNT) AS TOKEN_COUNT "  
+											+ "FROM AllTerms "
+											+ "GROUP BY POS");
 			partOne.createOrReplaceTempView("partOne");
 			
 			

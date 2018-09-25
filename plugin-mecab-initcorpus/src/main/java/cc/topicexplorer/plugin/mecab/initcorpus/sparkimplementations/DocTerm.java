@@ -168,6 +168,7 @@ public static void docTerm(Context context) {
 			      .option("header", "true")
 			      .load("temp/docTerm.sql.csv");
 		df.createOrReplaceTempView("DocTerm");
+		df.show();
 	
 	
 	

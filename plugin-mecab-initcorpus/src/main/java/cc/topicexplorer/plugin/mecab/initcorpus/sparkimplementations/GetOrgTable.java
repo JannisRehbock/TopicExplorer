@@ -25,7 +25,7 @@ public class GetOrgTable {
 		String[] japfile = fileJap.list();
 		
 		String Jap = prop.getProperty("Mecab_fileJap")+"/"+japfile[0];		
-		String Ger = prop.getProperty("Mecab_fileGer")+"/"+gerfile[0];	
+		String Ger = prop.getProperty("Mecab_fileGer")+"/"+gerfile[0];
 		String Eng = prop.getProperty("Mecab_fileEng")+"/"+engfile[0];	
 		String text = prop.getProperty("Mecab_filetext")+"/"+textfile[0];	
 		String meta = prop.getProperty("Mecab_filemeta")+"/"+metafile[0];	
